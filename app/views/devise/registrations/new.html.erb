@@ -1,0 +1,25 @@
+
+
+<div class="span4">
+	<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {class: "well form-inline"}) do |f| %>
+	  <%= f.error_notification %>
+		
+		<fieldset>
+			<legend>Sign up</legend>
+		  <div class="inputs">
+		    <%= f.input :email, :required => true, :autofocus => true, :label => false, :placeholder => "Email" %>
+		    <%= f.input :first_name, :required => true, :label => false, :placeholder => "First Name" %>
+		    <%= f.input :last_name, :required => true, :label => false, :placeholder => "Last Name" %>
+		    <%= f.input :profile_name, :required => true, :label => false, :placeholder => "Profile Name" %>
+		    <%= f.input :password, :required => true, :label => false, :placeholder => "Password" %>
+		    <%= f.input :password_confirmation, :required => true, :label => false, :placeholder => "Confirm Password" %>
+		  </div>
+	  </fieldset>
+
+	  <div class="actions">
+	    <%= f.button :submit, "Sign up", class: "btn" %>
+	  </div>
+	<% end %>
+
+	<%= render :partial => "devise/shared/links" %>
+</div>
