@@ -2,7 +2,7 @@ Pingpong::Application.routes.draw do
 
   
 
-	root to: "matches#index"
+	root to: "users#index"
 
   resources :matches
   as :user do
@@ -18,5 +18,7 @@ Pingpong::Application.routes.draw do
     post "/login" => "devise/sessions#create", as: :user_session
     delete "/logout" => "devise/sessions#destroy", as: :destroy_user_session
   end
+
+  get "/users" => "users#index", as: :users
   
 end

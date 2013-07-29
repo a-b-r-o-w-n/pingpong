@@ -1,0 +1,22 @@
+<table class="table table-striped">
+	<thead>
+    <tr>
+      <th>Player</th>
+      <th>Wins</th>
+      <th>Losses</th>
+      <th>Record</th>
+      <th>Winning Percentage</th>
+    </tr>
+  </thead>
+	<tbody>
+		<% @users.each do |user| %>
+      <tr>
+        <td><%= user.full_name %></td>
+        <td><%= user.wins %></td>
+        <td><%= user.losses %></td>
+        <td><%= user.record %></td>
+        <td><%= number_to_percentage(user.winning_percentage) %></td>
+      </tr>
+    <% end %>
+	</tbody>
+</table>

@@ -15,12 +15,32 @@ class User < ActiveRecord::Base
     matches1 + matches2
   end
 
+  def complete_matches
+    self.matches.select { |m| m.status == 'COMPLETE'}
+  end
+
+  def matches_won
+    complete_matches.select { |m| m.winner == self }
+  end
+
+  def wins
+    matches_won.count
+  end
+
+  def matches_lost
+    complete_matches.select { |m| m.winner != self }
+  end
+
+  def losses
+    matches_lost.count
+  end
+
   def record
     "#{self.wins}/#{self.losses}"
   end
 
   def winning_percentage
-    self.wins / self.losses
+    self.wins.to_f / self.complete_matches.count.to_f
   end
 
   def full_name
