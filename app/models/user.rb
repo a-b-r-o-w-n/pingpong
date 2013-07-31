@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
       )
 
     self.update_attribute :rank_score, (self.wins*2 - self.losses)
-    self.update_attribute :rank, User.all.sort_by(&:winning_percentage).index(self) + 1
+    self.update_attribute :rank, User.all.reverse.sort_by(&:winning_percentage).index(self) + 1
   end
 
 end
