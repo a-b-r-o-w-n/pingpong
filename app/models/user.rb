@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me,
   				  :first_name, :last_name, :profile_name, :wins, :losses,
-            :player1_id, :player2_id
+            :player1_id, :player2_id, :rank_score, :rank
 
   has_many :matches1, class_name: "Match", foreign_key: :player1_id
   has_many :matches2, class_name: "Match", foreign_key: :player2_id  
@@ -25,21 +25,12 @@ class User < ActiveRecord::Base
     complete_matches.select { |m| m.winner == self }
   end
 
-  def wins
-    matches_won.count
-  end
-
-  # Sort_by block used
-  def rank
-    User.all.sort_by(&:winning_percentage).reverse.index(self) + 1
-  end
+  # def rank
+  #   User.all.sort_by(&:winning_percentage).reverse.index(self) + 1
+  # end
 
   def matches_lost
     complete_matches.select { |m| m.winner != self }
-  end
-
-  def losses
-    matches_lost.count
   end
 
   def record
@@ -47,7 +38,11 @@ class User < ActiveRecord::Base
   end
 
   def winning_percentage
-    self.complete_matches.count > 0 ? self.wins.to_f / self.complete_matches.count : 0
+    self.total_matches_played > 0 ? self.wins.to_f / self.total_matches_played : 0
+  end
+
+  def total_matches_played
+    self.wins + self.losses
   end
 
   def full_name
@@ -63,8 +58,13 @@ class User < ActiveRecord::Base
   end
 
   def update_stats
-    self.wins = wins
-    self.losses = losses
+    self.update_attributes(
+      wins: matches_won.count,
+      losses: matches_lost.count
+      )
+
+    self.update_attribute :rank_score, (self.wins*2 - self.losses)
+    self.update_attribute :rank, User.order('rank_score desc').index(self) + 1
   end
 
 end

@@ -56,9 +56,11 @@ end
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'devise'
+gem 'devise', '3.0.0.rc'
 gem 'simple_form'
 gem 'protected_attributes'
 gem 'twitter-bootstrap-rails'
 gem 'therubyracer'
 gem 'less-rails' 
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'

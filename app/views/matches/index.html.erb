@@ -19,9 +19,9 @@
     <% @matches.each do |match| %>
       <tr>
         <td><%= Match::STATUS_CHOICES.invert[match.status] %></td>
-        <td><%= match.player1 %></td>
+        <td><span class="rank"><%= match.player1.rank %> </span><%= match.player1 %></td>
         <td><%= match.score1 %></td>
-        <td><%= match.player2 %></td>
+        <td><span class="rank"><%= match.player2.rank %> </span><%= match.player2 %></td>
         <td><%= match.score2 %></td>
         <td><%= match.winner %>
         <td><%= pretty_time(match.created_at) %></td>
@@ -41,6 +41,7 @@
     <% end %>
   </tbody>
 </table>
+<%= will_paginate @matches %>
 
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_match_path,

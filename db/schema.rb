@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130731143915) do
+ActiveRecord::Schema.define(version: 20130731192713) do
 
   create_table "matches", force: true do |t|
     t.string   "status"
@@ -42,6 +42,8 @@ ActiveRecord::Schema.define(version: 20130731143915) do
     t.integer  "wins",                               default: 0
     t.integer  "losses",                             default: 0
     t.boolean  "admin",                              default: false
+    t.integer  "rank_score",                         default: 0
+    t.integer  "rank"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
