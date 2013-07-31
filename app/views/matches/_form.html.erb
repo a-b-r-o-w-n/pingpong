@@ -1,12 +1,12 @@
-<div class='span6'>
+<div class='span4'>
 	<%= simple_form_for @match, :html => { :class => 'form-horizontal well' } do |f| %>
-	  <%= f.input :status %>
+	  <%= f.input :status, collection: Match::STATUS_CHOICES %>
 	  <%= f.association :player1 %>
 	  <%= f.input :score1 %>
 	  <%= f.association :player2 %>
 	  <%= f.input :score2 %>
 	  <div class="form-actions">
-	    <%= f.button :submit, :class => 'btn-primary' %>
+	    <%= f.button :submit, :class => 'btn btn-primary' %>
 	    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
 	                matches_path, :class => 'btn' %>
 	  </div>

@@ -9,14 +9,15 @@ class User < ActiveRecord::Base
   				  :first_name, :last_name, :profile_name, :wins, :losses
 
   has_many :matches1, class_name: "Match", foreign_key: :player1_id
-  has_many :matches2, class_name: "Match", foreign_key: :player2_id
+  has_many :matches2, class_name: "Match", foreign_key: :player2_id  
+
 
   def matches
     matches1 + matches2
   end
 
   def complete_matches
-    self.matches.select { |m| m.status == 'COMPLETE'}
+    self.matches.select { |m| m.status == 'C'}
   end
 
   def matches_won
@@ -33,6 +34,10 @@ class User < ActiveRecord::Base
 
   def losses
     matches_lost.count
+  end
+
+  def rank
+    User.all.sort
   end
 
   def record
@@ -53,6 +58,12 @@ class User < ActiveRecord::Base
 
   def to_param
     self.profile_name
+  end
+
+  def update_stats
+    self.wins = wins
+    self.losses = losses
+    self.winning_percentage = winning_percentage
   end
 
 end
