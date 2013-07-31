@@ -60,13 +60,13 @@ class User < ActiveRecord::Base
   end
 
   def update_stats
-    self.update_attributes(
-      wins: matches_won.count,
-      losses: matches_lost.count
-      )
+      self.update_attributes(
+        wins: matches_won.count,
+        losses: matches_lost.count
+        )
 
-    self.update_attribute :rank_score, (self.wins*2 - self.losses)
-    self.update_attribute :rank, User.all.sort_by(&:winning_percentage).reverse.index(self) + 1
+      self.update_attribute :rank_score, (self.wins*2 - self.losses)
+      self.update_attribute :rank, User.all.sort_by(&:winning_percentage).reverse.index(self) + 1
   end
 
 end

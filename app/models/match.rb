@@ -27,6 +27,10 @@ class Match < ActiveRecord::Base
   	end
   end
 
+  def players
+    [self.player1, self.player2]
+  end
+
 
   private
   def cannot_play_self
