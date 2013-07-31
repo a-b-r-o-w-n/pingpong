@@ -20,7 +20,7 @@
     <% @matches.each do |match| %>
       <tr>
         <td><%= link_to match.id, match_path(match) %></td>
-        <td><%= match.status %></td>
+        <td><%= Match::STATUS_CHOICES.invert[match.status] %></td>
         <td><%= match.player1 %></td>
         <td><%= match.score1 %></td>
         <td><%= match.player2 %></td>
@@ -28,13 +28,16 @@
         <td><%= match.winner %>
         <td><%= pretty_time(match.created_at) %></td>
         <td>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_match_path(match), :class => 'btn btn-mini' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      match_path(match),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                      :class => 'btn btn-mini btn-danger' %>
+          <% if match.status == 'P' || edit? %>
+            <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_match_path(match), :class => 'btn btn-mini' %>
+            <% if edit? %>
+              <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                        match_path(match),
+                        :method => :delete,
+                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                        :class => 'btn btn-mini btn-danger' %>
+            <% end %>
+          <% end %>
         </td>
       </tr>
     <% end %>

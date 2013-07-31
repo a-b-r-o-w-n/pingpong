@@ -14,8 +14,8 @@ class Match < ActiveRecord::Base
   belongs_to :player1, class_name: "User", foreign_key: :player1_id
   belongs_to :player2, class_name: "User", foreign_key: :player2_id
 
-  validates :player1, presence: true
-  validates :player2, presence: true
+  # validates :player1, presence: true
+  # validates :player2, presence: true
   validate :cannot_play_self
 
   validates_inclusion_of :status, in: STATUS_CHOICES.values, allow_nil: true
@@ -34,7 +34,7 @@ class Match < ActiveRecord::Base
   end
 
   def set_to_pending
-    self.status = 'P'
+    self.status = 'P' unless self.status == 'C'
   end
 
 end

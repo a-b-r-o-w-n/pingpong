@@ -6,16 +6,23 @@
       <th>Losses</th>
       <th>Record</th>
       <th>Winning Percentage</th>
+      <th>Rank</th>
     </tr>
   </thead>
 	<tbody>
-		<% @users.each do |user| %>
+		<% @users.each_with_index do |user, idx| %>
       <tr>
-        <td><%= user.full_name %></td>
+        <td>
+          <% if idx == 0 %>
+            <%= image_tag('first-place.png', style: 'height: 19px;') %>
+          <% end %>
+          <%= user.full_name %>
+        </td>
         <td><%= user.wins %></td>
         <td><%= user.losses %></td>
         <td><%= user.record %></td>
         <td><%= number_to_percentage(user.winning_percentage) %></td>
+        <td><%= user.rank %></td>
       </tr>
     <% end %>
 	</tbody>

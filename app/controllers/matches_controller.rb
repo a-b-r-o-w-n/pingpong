@@ -1,5 +1,6 @@
 class MatchesController < ApplicationController
   before_action :set_match, only: [:show, :edit, :update, :destroy]
+  before_filter :authenticate_user!, except: [:index, :show] 
 
   # GET /matches
   # GET /matches.json
@@ -25,6 +26,8 @@ class MatchesController < ApplicationController
   # POST /matches.json
   def create
     @match = Match.new(match_params)
+    @match.player1_id = params[:match][:player1_id]
+    @match.player2_id = params[:match][:player2_id]
 
     respond_to do |format|
       if @match.save
@@ -40,7 +43,7 @@ class MatchesController < ApplicationController
   # PATCH/PUT /matches/1
   # PATCH/PUT /matches/1.json
   def update
-    # TODO player1 and player2 not getting updated
+
     respond_to do |format|
       if @match.update(match_params)
         format.html { redirect_to @match, notice: 'Match was successfully updated.' }
@@ -70,6 +73,6 @@ class MatchesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def match_params
-      params.require(:match).permit(:status, :player1_id, :player2_id, :score1, :score2)
+      params.require(:match).permit(:status, :player1_id, :player2_id, :score1, :score2, :player1, :player2)
     end
 end

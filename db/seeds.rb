@@ -26,18 +26,77 @@ daniel = User.create({
     password_confirmation: DEFAULT_INSECURE_PASSWORD
     })
 
-match1 = Match.create({
-    status:         'PENDING',
+michael = User.create({
+    first_name: "Michael",
+    last_name: "Gaddy",
+    profile_name: "michael",
+    email: "michael@example.com",
+    password: DEFAULT_INSECURE_PASSWORD,
+    password_confirmation: DEFAULT_INSECURE_PASSWORD
+    })
+
+kellen = User.create({
+    first_name: "Kellen",
+    last_name: "Summer",
+    profile_name: "kellen",
+    email: "kellen@example.com",
+    password: DEFAULT_INSECURE_PASSWORD,
+    password_confirmation: DEFAULT_INSECURE_PASSWORD
+    })
+
+
+Match.create({
+    status:         'C',
     player1:        andy, 
     score1:         11,
-    player2:        daniel,
-    score2:         7
+    player2:        michael,
+    score2:         8
 	})
 
-match2 = Match.create({
-    status:         'COMPLETE',
+Match.create({
+    status:         'C',
     player1:        daniel, 
-    score1:         0,
+    score1:         11,
     player2:        andy,
-    score2:         0
+    score2:         6
 	})
+
+Match.create({
+    status:         'C',
+    player1:        kellen,
+    score1:         11,
+    player2:        michael,
+    score2:         8
+    })
+
+Match.create({
+    status:         'C',
+    player1:        kellen,
+    score1:         11,
+    player2:        andy,
+    score2:         6
+    })
+
+Match.create({
+    status:         'C',
+    player1:        kellen,
+    score1:         11,
+    player2:        daniel,
+    score2:         6
+    })
+
+Match.create({
+    status:         'C',
+    player1:        michael,
+    score1:         11,
+    player2:        daniel,
+    score2:         6
+    })
+
+Match.create({
+    status:         'C',
+    player1:        andy,
+    score1:         11,
+    player2:        kellen,
+    score2:         6
+    })

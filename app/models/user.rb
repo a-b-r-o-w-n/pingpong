@@ -6,7 +6,8 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me,
-  				  :first_name, :last_name, :profile_name, :wins, :losses
+  				  :first_name, :last_name, :profile_name, :wins, :losses,
+            :player1_id, :player2_id
 
   has_many :matches1, class_name: "Match", foreign_key: :player1_id
   has_many :matches2, class_name: "Match", foreign_key: :player2_id  
@@ -28,6 +29,10 @@ class User < ActiveRecord::Base
     matches_won.count
   end
 
+  def rank
+    User.all.sort_by(&:winning_percentage).reverse.index(self) + 1
+  end
+
   def matches_lost
     complete_matches.select { |m| m.winner != self }
   end
@@ -36,16 +41,12 @@ class User < ActiveRecord::Base
     matches_lost.count
   end
 
-  def rank
-    User.all.sort
-  end
-
   def record
     "#{self.wins}/#{self.losses}"
   end
 
   def winning_percentage
-    self.wins.to_f / self.complete_matches.count.to_f
+    self.complete_matches.count > 0 ? self.wins.to_f / self.complete_matches.count : 0
   end
 
   def full_name
@@ -63,7 +64,6 @@ class User < ActiveRecord::Base
   def update_stats
     self.wins = wins
     self.losses = losses
-    self.winning_percentage = winning_percentage
   end
 
 end
