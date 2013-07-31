@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
     matches_won.count
   end
 
+  # Sort_by block used
   def rank
     User.all.sort_by(&:winning_percentage).reverse.index(self) + 1
   end
