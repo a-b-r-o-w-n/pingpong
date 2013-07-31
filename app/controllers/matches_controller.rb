@@ -43,6 +43,8 @@ class MatchesController < ApplicationController
   # PATCH/PUT /matches/1
   # PATCH/PUT /matches/1.json
   def update
+    @match.player1_id = params[:match][:player1_id]
+    @match.player2_id = params[:match][:player2_id]
 
     respond_to do |format|
       if @match.update(match_params)
