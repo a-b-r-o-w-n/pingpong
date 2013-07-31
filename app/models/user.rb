@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
   has_many :matches1, class_name: "Match", foreign_key: :player1_id
   has_many :matches2, class_name: "Match", foreign_key: :player2_id  
 
+  validates_uniqueness_of :profile_name
+
 
   def matches
     matches1 + matches2
