@@ -53,14 +53,17 @@ class User < ActiveRecord::Base
     self.matches.map(&:players).flatten.delete_if { |p| p == self }
   end
 
-  def owp
-    User.average_array(self.opponents.map(&:winning_percentage))
-  end
+  # def owp
+  #   self.total_matches_played > 0 ? User.average_array(self.opponents.map(&:winning_percentage)) : 0
+  # end
 
-  def oowp
-    User.average_array(self.opponents.map(&:owp))
-  end
+  # def oowp
+  #   self.total_matches_played > 0 ? User.average_array(self.opponents.map(&:owp)) : 0
+  # end
 
+  # def rpi
+  #   (self.winning_percentage * 0.25) + (self.owp * 0.5) + (self.oowp * 0.25)
+  # end
 
   def full_name
     "#{self.first_name} #{self.last_name}"
@@ -81,7 +84,11 @@ class User < ActiveRecord::Base
     )
 
     self.update_attribute :rank_score, (self.wins*2 - self.losses)
-    self.update_attribute :rank, User.all.sort_by(&:winning_percentage).reverse.index(self) + 1
+    # self.update_attribute :rank, User.all.sort_by(&:winning_percentage).reverse.index(self) + 1
+    self.update_attribute :owp, self.total_matches_played > 0 ? User.average_array(self.opponents.map(&:winning_percentage)) : 0
+    self.update_attribute :oowp, self.total_matches_played > 0 ? User.average_array(self.opponents.map(&:owp)) : 0
+    self.update_attribute :rpi, (self.winning_percentage * 0.25) + (self.owp * 0.5) + (self.oowp * 0.25)
+    self.update_attribute :rank, User.order('rpi desc').index(self) + 1
   end
 
   private
