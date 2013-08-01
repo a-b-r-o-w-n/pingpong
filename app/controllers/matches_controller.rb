@@ -1,7 +1,6 @@
 class MatchesController < ApplicationController
   before_action :set_match, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_user!, except: [:index, :show] 
-  after_filter :update_users_stats, only: [:create, :edit]
 
   # GET /matches
   # GET /matches.json
@@ -78,9 +77,5 @@ class MatchesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def match_params
       params.require(:match).permit(:status, :player1_id, :player2_id, :score1, :score2, :player1, :player2)
-    end
-
-    def update_users_stats
-      @match.players.each {|p| p.update_stats}
     end
 end

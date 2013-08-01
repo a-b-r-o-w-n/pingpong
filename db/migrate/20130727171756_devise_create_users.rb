@@ -38,7 +38,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string :profile_name,  :unique => true
       t.integer :wins,         default: 0
       t.integer :losses,       default: 0
-      t.integer :rank,         default: 0
+      t.integer :rank
       t.integer :rank_score,   default: 0
 
       t.timestamps

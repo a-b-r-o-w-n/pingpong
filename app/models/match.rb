@@ -1,6 +1,7 @@
 class Match < ActiveRecord::Base
 	# score1 is player1's score and score2 is player2's score
   before_create :set_to_pending
+  after_save :update_users_stats
 
 
   STATUS_CHOICES = {
@@ -39,6 +40,10 @@ class Match < ActiveRecord::Base
 
   def set_to_pending
     self.status = 'P' unless self.status == 'C'
+  end
+
+  def update_users_stats
+    self.players.each {|p| p.update_stats}
   end
 
 end

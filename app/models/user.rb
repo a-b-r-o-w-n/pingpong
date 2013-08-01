@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  after_create :update_stats
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -7,7 +9,7 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me,
                   :first_name, :last_name, :profile_name, :wins, :losses,
-                  :player1_id, :player2_id, :rank_score, :rank
+                  :player1_id, :player2_id, :rank_score, :rank, :opponents
 
   has_many :matches1, class_name: "Match", foreign_key: :player1_id
   has_many :matches2, class_name: "Match", foreign_key: :player2_id
@@ -46,6 +48,15 @@ class User < ActiveRecord::Base
   def total_matches_played
     self.wins + self.losses
   end
+
+  def opponents
+    self.matches.map(&:players).flatten.delete_if { |p| p == self }
+  end
+
+  def owp
+
+  end
+
 
   def full_name
     "#{self.first_name} #{self.last_name}"

@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 20130731143915) do
     t.string   "profile_name"
     t.integer  "wins",                   default: 0
     t.integer  "losses",                 default: 0
-    t.integer  "rank",                   default: 0
+    t.integer  "rank"
     t.integer  "rank_score",             default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
