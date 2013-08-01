@@ -6,11 +6,11 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me,
-  				  :first_name, :last_name, :profile_name, :wins, :losses,
-            :player1_id, :player2_id, :rank_score, :rank
+                  :first_name, :last_name, :profile_name, :wins, :losses,
+                  :player1_id, :player2_id, :rank_score, :rank
 
   has_many :matches1, class_name: "Match", foreign_key: :player1_id
-  has_many :matches2, class_name: "Match", foreign_key: :player2_id  
+  has_many :matches2, class_name: "Match", foreign_key: :player2_id
 
   validates_uniqueness_of :profile_name
 
@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   end
 
   def full_name
-  	"#{self.first_name} #{self.last_name}"
+    "#{self.first_name} #{self.last_name}"
   end
 
   def to_s
@@ -60,13 +60,13 @@ class User < ActiveRecord::Base
   end
 
   def update_stats
-      self.update_attributes(
+    self.update_attributes(
         wins: matches_won.count,
         losses: matches_lost.count
-        )
+    )
 
-      self.update_attribute :rank_score, (self.wins*2 - self.losses)
-      self.update_attribute :rank, User.all.sort_by(&:winning_percentage).reverse.index(self) + 1
+    self.update_attribute :rank_score, (self.wins*2 - self.losses)
+    self.update_attribute :rank, User.all.sort_by(&:winning_percentage).reverse.index(self) + 1
   end
 
 end
