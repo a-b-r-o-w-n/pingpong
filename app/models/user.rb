@@ -54,7 +54,11 @@ class User < ActiveRecord::Base
   end
 
   def owp
+    User.average_array(self.opponents.map(&:winning_percentage))
+  end
 
+  def oowp
+    User.average_array(self.opponents.map(&:owp))
   end
 
 
@@ -78,6 +82,11 @@ class User < ActiveRecord::Base
 
     self.update_attribute :rank_score, (self.wins*2 - self.losses)
     self.update_attribute :rank, User.all.sort_by(&:winning_percentage).reverse.index(self) + 1
+  end
+
+  private
+  def self.average_array(ary)
+    ary.inject(:+).to_f / ary.size
   end
 
 end
