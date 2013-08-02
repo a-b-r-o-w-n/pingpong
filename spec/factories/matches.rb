@@ -11,7 +11,7 @@ FactoryGirl.define do
 
 		factory :complete_match do 
 			status 'C'
-			score1 7
+			score1 8
 			score2 11
 		end
 	end
