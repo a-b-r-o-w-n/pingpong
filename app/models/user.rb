@@ -66,18 +66,6 @@
     self.matches.map(&:players).flatten.delete_if { |p| p == self }
   end
 
-  # def owp
-  #   self.total_matches_played > 0 ? User.average_array(self.opponents.map(&:winning_percentage)) : 0
-  # end
-
-  # def oowp
-  #   self.total_matches_played > 0 ? User.average_array(self.opponents.map(&:owp)) : 0
-  # end
-
-  # def rpi
-  #   (self.winning_percentage * 0.25) + (self.owp * 0.5) + (self.oowp * 0.25)
-  # end
-
   def full_name
     "#{self.first_name} #{self.last_name}"
   end
@@ -91,22 +79,53 @@
   end
 
   def update_stats
-    self.update_attributes(
-        wins: matches_won.count,
-        losses: matches_lost.count
-    )
-
-    self.update_attribute :rank_score, (self.wins*2 - self.losses)
-    # self.update_attribute :rank, User.all.sort_by(&:winning_percentage).reverse.index(self) + 1
-    self.update_attribute :owp, self.total_matches_played > 0 ? average_array(self.opponents.map(&:winning_percentage)) : 0
-    self.update_attribute :oowp, self.total_matches_played > 0 ? average_array(self.opponents.map(&:owp)) : 0
-    self.update_attribute :rpi, (self.winning_percentage * 0.50) + (self.owp * 0.25) + (self.oowp * 0.25)
-    self.update_attribute :rank, User.count(conditions: "rpi > #{self.rpi}") + 1
+    update_wins
+    update_losses
+    update_owp
+    update_oowp
+    update_rpi
+    update_rank
   end
 
   private
   def average_array(ary)
     ary.inject(:+).to_f / ary.size
+  end
+
+  def update_wins
+    old = self.wins
+    self.update_attribute :wins, matches_won.count
+    puts " >>>>> #{self.full_name} wins updated from [#{old}] to [#{self.wins}]." if old != self.wins
+  end
+
+  def update_losses
+    old = self.losses
+    self.update_attribute :losses, matches_lost.count
+    puts " >>>>> #{self.full_name} losses updated from [#{old}] to [#{self.losses}}." if old != self.losses
+  end
+
+  def update_owp
+    old = self.owp
+    self.update_attribute :owp, self.total_matches_played > 0 ? average_array(self.opponents.map(&:winning_percentage)) : 0
+    puts " >>>>> #{self.full_name} owp updated from [#{old}] to [#{self.owp}]." if old != self.owp
+  end
+
+  def update_oowp
+    old = self.oowp
+    self.update_attribute :oowp, self.total_matches_played > 0 ? average_array(self.opponents.map(&:owp)) : 0
+    puts " >>>>> #{self.full_name} oowp updated from [#{old}] to [#{self.oowp}]." if old != self.oowp
+  end
+
+  def update_rpi
+    old = self.rpi
+    self.update_attribute :rpi, (self.winning_percentage * 0.50) + (self.owp * 0.25) + (self.oowp * 0.25)
+    puts " >>>>> #{self.full_name} rpi updated from [#{old}] to [#{self.rpi}]." if old != self.rpi
+  end
+
+  def update_rank
+    old = self.rank
+    self.update_attribute :rank, User.count(conditions: "rpi > #{self.rpi}") + 1
+    puts " >>>>> #{self.full_name} rank updated from [#{old}] to [#{self.rank}]." if old != self.rank
   end
 
 end
