@@ -101,7 +101,7 @@
     self.update_attribute :owp, self.total_matches_played > 0 ? average_array(self.opponents.map(&:winning_percentage)) : 0
     self.update_attribute :oowp, self.total_matches_played > 0 ? average_array(self.opponents.map(&:owp)) : 0
     self.update_attribute :rpi, (self.winning_percentage * 0.50) + (self.owp * 0.25) + (self.oowp * 0.25)
-    self.update_attribute :rank, User.count{ |u| u.rpi > self.rpi }+ 1
+    self.update_attribute :rank, User.count(conditions: "rpi > #{self.rpi}") + 1
   end
 
   private
