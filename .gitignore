@@ -16,3 +16,4 @@
 /tmp
 *.DSStore
 .idea/*
+*.DS_Store
