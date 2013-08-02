@@ -38,6 +38,7 @@ end
 group :development, :test do
 	gem 'rspec-rails'
 	gem 'pry'
+	gem 'pry-nav'
 	gem 'shoulda-matchers'
 	gem 'factory_girl_rails', '~> 4.0'
 	gem 'awesome_print'

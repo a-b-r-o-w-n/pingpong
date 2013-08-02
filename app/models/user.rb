@@ -1,6 +1,6 @@
-  class User < ActiveRecord::Base
+class User < ActiveRecord::Base
 
-  after_create :update_stats
+  after_create :set_new_stats
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
@@ -42,10 +42,6 @@
     complete_matches.select { |m| m.winner == self }
   end
 
-  # def rank
-  #   User.all.sort_by(&:winning_percentage).reverse.index(self) + 1
-  # end
-
   def matches_lost
     complete_matches.select { |m| m.winner != self }
   end
@@ -78,13 +74,50 @@
     self.profile_name
   end
 
-  def update_stats
-    update_wins
-    update_losses
-    update_owp
-    update_oowp
-    update_rpi
-    update_rank
+  def User.update_stats
+    @users = User.all
+    @users.each { |u| u.update_wins           }
+    @users.each { |u| u.update_losses         }
+    @users.each { |u| u.update_owp            }
+    @users.each { |u| u.update_oowp           }
+    @users.each { |u| u.update_rpi            }
+    @users.each { |u| u.update_rank(@users)   }
+  end
+
+  def update_wins
+    old_stat = self.wins
+    self.update_attribute :wins, self.matches_won.count
+    logger.tagged("STATS", "WINS") { logger.info "#{self.full_name} wins updated from [#{old_stat}] to [#{self.wins}]." if old_stat != self.wins }
+  end
+
+  def update_losses
+    old_stat = self.losses
+    self.update_attribute :losses, self.matches_lost.count
+    logger.tagged("STATS", "LOSSES") { logger.info "#{self.full_name} losses updated from [#{old_stat}] to [#{self.losses}]." if old_stat != self.losses }
+  end
+
+  def update_owp
+    old_stat = self.owp
+    self.update_attribute :owp, self.total_matches_played > 0 ? average_array(self.opponents.map(&:winning_percentage)) : 0
+    logger.tagged("STATS", "OWP") { logger.info "#{self.full_name} owp updated from [#{old_stat}] to [#{self.owp}]." if (old_stat - self.owp) > 0.2 }
+  end
+
+  def update_oowp
+    old_stat = self.oowp
+    self.update_attribute :oowp, self.total_matches_played > 0 ? average_array(self.opponents.map(&:owp)) : 0
+    logger.tagged("STATS", "OOWP") { logger.info "#{self.full_name} oowp updated from [#{old_stat}] to [#{self.oowp}]." if (old_stat - self.oowp) > 0.2 }
+  end
+
+  def update_rpi
+    old_stat = self.rpi
+    self.update_attribute :rpi, (self.winning_percentage * 0.40) + (self.owp * 0.35) + (self.oowp * 0.25)
+    logger.tagged("STATS", "RPI") { logger.info "#{self.full_name} oowp updated from [#{old_stat}] to [#{self.rpi}]." if (old_stat - self.rpi) > 0.2 }
+  end
+
+  def update_rank(users)
+    old_stat = self.rank
+    self.update_attribute :rank, users.count(conditions: "rpi > #{self.rpi}") + 1
+    logger.tagged("STATS", "RANK") { logger.info "#{self.full_name} oowp updated from [#{old_stat}] to [#{self.rank}]." if old_stat != self.rank }
   end
 
   private
@@ -92,40 +125,8 @@
     ary.inject(:+).to_f / ary.size
   end
 
-  def update_wins
-    old = self.wins
-    self.update_attribute :wins, matches_won.count
-    puts " >>>>> #{self.full_name} wins updated from [#{old}] to [#{self.wins}]." if old != self.wins
-  end
-
-  def update_losses
-    old = self.losses
-    self.update_attribute :losses, matches_lost.count
-    puts " >>>>> #{self.full_name} losses updated from [#{old}] to [#{self.losses}}." if old != self.losses
-  end
-
-  def update_owp
-    old = self.owp
-    self.update_attribute :owp, self.total_matches_played > 0 ? average_array(self.opponents.map(&:winning_percentage)) : 0
-    puts " >>>>> #{self.full_name} owp updated from [#{old}] to [#{self.owp}]." if old != self.owp
-  end
-
-  def update_oowp
-    old = self.oowp
-    self.update_attribute :oowp, self.total_matches_played > 0 ? average_array(self.opponents.map(&:owp)) : 0
-    puts " >>>>> #{self.full_name} oowp updated from [#{old}] to [#{self.oowp}]." if old != self.oowp
-  end
-
-  def update_rpi
-    old = self.rpi
-    self.update_attribute :rpi, (self.winning_percentage * 0.50) + (self.owp * 0.25) + (self.oowp * 0.25)
-    puts " >>>>> #{self.full_name} rpi updated from [#{old}] to [#{self.rpi}]." if old != self.rpi
-  end
-
-  def update_rank
-    old = self.rank
-    self.update_attribute :rank, User.count(conditions: "rpi > #{self.rpi}") + 1
-    puts " >>>>> #{self.full_name} rank updated from [#{old}] to [#{self.rank}]." if old != self.rank
+  def set_new_stats
+    User.update_stats
   end
 
 end

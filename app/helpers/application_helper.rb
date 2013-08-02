@@ -7,4 +7,7 @@ module ApplicationHelper
 	def edit?
 		current_user.try(:admin?)
 	end
+
+	logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
+
 end

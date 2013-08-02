@@ -10,7 +10,7 @@ class Match < ActiveRecord::Base
    'Canceled' => 'X'
   }
 
-  attr_accessible :status, :player1, :score1, :player2, :score2
+  attr_accessible :status, :player1, :score1, :player2, :score2, :player1_id, :player2_id
 
   belongs_to :player1, class_name: "User", foreign_key: :player1_id
   belongs_to :player2, class_name: "User", foreign_key: :player2_id
@@ -43,7 +43,7 @@ class Match < ActiveRecord::Base
   end
 
   def update_users_stats
-    self.players.each {|p| p.update_stats}
+    User.update_stats
   end
 
 end

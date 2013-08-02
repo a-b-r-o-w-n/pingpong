@@ -1,6 +1,9 @@
 desc "Update important user stats."
 task :update_stats => :environment do
-  puts "BEGIN - Updating user stats..."
-  User.all.each { |u| u.update_stats }
-  puts "END - User stats updated."
+	logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
+
+  logger.tagged("STATS") { logger.info "BEGIN - Updating user stats..." }
+  User.update_stats
+  logger.tagged("STATS") { logger.info "END - User stats updated." }
+  
 end
