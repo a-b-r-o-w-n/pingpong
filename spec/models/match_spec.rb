@@ -16,30 +16,23 @@ describe Match do
 
 		end
 
-		context "when the game is complete" do
-
-			before do 
-				match.update_attributes({
-					score1: 7,
-					score2: 11,
-					stats: 'C'
-					})
-			end
+		context "status is complete" do
+			let(:complete_match) { FactoryGirl.create(:complete_match) }
 
 			it "should have a winner" do
-				assert_equal match.winner, match.player2
+				expect(complete_match.winner).to eq complete_match.player2
 			end
 
 		end
 
-    context "it only has certain statuses" do
+    context "only has certain statuses" do
       let(:valid_statuses)  { ['C', 'P', 'X'] }
       let(:invalid_statuses){ ('A'..'Z').map {|l| l}.delete_if{|l| ['C','P','X'].include? l} }
 
       it "[valid statuses]" do
         valid_statuses.each do |s|
           match.status = s
-          expect(match).to be_valid
+          expect(match.save).to be_true
         end
       end
 
