@@ -1,13 +1,13 @@
 class Match < ActiveRecord::Base
 	# score1 is player1's score and score2 is player2's score
-  before_create :set_to_pending
   after_save :update_users_stats
 
 
   STATUS_CHOICES = {
-   'Complete' => 'C',
-   'Pending'  => 'P',
-   'Canceled' => 'X'
+   'Complete'     =>  'C',
+   'Pending'      =>  'P',
+   'In Progress'  => 'IP',
+   'Canceled'     =>  'X'
   }
 
   attr_accessible :status, :player1, :score1, :player2, :score2, :player1_id, :player2_id
@@ -32,14 +32,14 @@ class Match < ActiveRecord::Base
     [self.player1, self.player2]
   end
 
+  def to_s
+    "#{self.player1} vs. #{self.player2}"
+  end
+
 
   private
   def cannot_play_self
     errors[:base] << 'You cannot add yourself as a friend.' if self.player1_id == self.player2_id
-  end
-
-  def set_to_pending
-    self.status = 'P' unless self.status == 'C'
   end
 
   def update_users_stats

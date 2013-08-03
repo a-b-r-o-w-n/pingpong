@@ -1,0 +1,32 @@
+
+<div class="row" style="padding-top: 25px;">	
+	
+
+	<div class="span10 btn-container">
+		<div class="score">
+			<span id="p1-display-score"><%= @match.score1 %></span> - <span id="p2-display-score"><%=@match.score2 %></span>
+		</div>
+
+		<div class="point-button">
+			<span id="player1-point"><%= @match.player1 %></span> <span id="vs">VS</span> <span id="player2-point"><%= @match.player2%></span>
+		</div>
+
+		<%= button_tag "End Game", class: "btn btn-large btn-inverse", id: "end-game", style: "margin: 45px auto 0; display: block;" %>
+	</div>
+
+</div>
+
+<div style="display: none;" id="form-container">
+	<%= simple_form_for @match, remote: true do |f| %>
+	  <%= f.input :status, collection: Match::STATUS_CHOICES %>
+	  <%= f.association :player1 %>
+	  <%= f.input :score1 %>
+	  <%= f.association :player2 %>
+	  <%= f.input :score2 %>
+	  <div class="form-actions">
+	    <%= f.button :submit, :class => 'btn btn-primary' %>
+	    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+	                matches_path, :class => 'btn' %>
+	  </div>
+	<% end %>
+</div>

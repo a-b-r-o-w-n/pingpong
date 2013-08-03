@@ -4,7 +4,16 @@ Pingpong::Application.routes.draw do
 
 	root to: "users#index"
 
-  resources :matches
+  resources :matches do
+    member do
+      get :play
+    end
+
+    collection do
+      get "pending", to: "matches#pending_matches"
+    end
+  end
+
   as :user do
     get "/register", to: "devise/registrations#new", as: :register
     get "/login", to: "devise/sessions#new", as: :login

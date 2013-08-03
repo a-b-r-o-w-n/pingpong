@@ -19,8 +19,11 @@
 <div class="form-actions">
   <%= link_to t('.back', :default => t("helpers.links.back")),
               matches_path, :class => 'btn'  %>
+  <% if ['P', 'IP'].include? @match.status %>
+    <%= link_to t('.play', :defualt => t("helpers.links.play")), play_match_path(@match), :class => 'btn btn-info'
+  <% end %>
   <%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_match_path(@match), :class => 'btn' %>
+              edit_match_path(@match), :class => 'btn btn-warning' %>
   <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
               match_path(@match),
               :method => 'delete',

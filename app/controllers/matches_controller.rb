@@ -1,5 +1,5 @@
 class MatchesController < ApplicationController
-  before_action :set_match, only: [:show, :edit, :update, :destroy]
+  before_action :set_match, only: [:show, :edit, :update, :destroy, :play]
   before_filter :authenticate_user!, except: [:index, :show] 
 
   # GET /matches
@@ -7,6 +7,15 @@ class MatchesController < ApplicationController
   def index
     params[:page] ||=1
     @matches = Match.order('id desc').paginate(:page => params[:page], :per_page => 10)
+  end
+
+  def pending_matches
+    params[:page] ||=1
+    @matches = Match.where(status: ['P', 'IP']).order('id desc').paginate(:page => params[:page], :per_page => 10)
+
+    respond_to do |format|
+      format.html { render :template => "matches/index.html.erb" }
+    end
   end
 
   # GET /matches/1
@@ -27,12 +36,10 @@ class MatchesController < ApplicationController
   # POST /matches.json
   def create
     @match = Match.new(match_params)
-    # @match.player1_id = params[:match][:player1_id]
-    # @match.player2_id = params[:match][:player2_id]
 
     respond_to do |format|
       if @match.save
-        format.html { redirect_to @match, notice: 'Match was successfully created.' }
+        format.html { redirect_to matches_url, notice: 'Match was successfully created.' }
         format.json { render action: 'show', status: :created, location: @match }
       else
         format.html { render action: 'new' }
@@ -44,8 +51,6 @@ class MatchesController < ApplicationController
   # PATCH/PUT /matches/1
   # PATCH/PUT /matches/1.json
   def update
-    # @match.player1_id = params[:match][:player1_id]
-    # @match.player2_id = params[:match][:player2_id]
 
     respond_to do |format|
       if @match.update(match_params)
@@ -68,6 +73,16 @@ class MatchesController < ApplicationController
     end
   end
 
+  def play 
+    if ['IP', 'P'].include? @match.status
+      @match.update_attribute :status, 'IP'
+      @match
+    else
+      redirect_to matches_url
+    end
+  end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_match
@@ -78,4 +93,5 @@ class MatchesController < ApplicationController
     def match_params
       params.require(:match).permit(:status, :player1_id, :player2_id, :score1, :score2, :player1, :player2)
     end
+
 end

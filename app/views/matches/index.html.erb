@@ -26,8 +26,11 @@
         <td><%= match.winner %>
         <td><%= pretty_time(match.created_at) %></td>
         <td>
+          <% if ['P', 'IP'].include? match.status %>
+            <%= link_to t('.play', :defualt => t("helpers.links.play")), play_match_path(match), :class => 'btn btn-info btn-mini' %>
+          <% end %>
           <% if match.status == 'P' || edit? %>
-            <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_match_path(match), :class => 'btn btn-mini' %>
+            <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_match_path(match), :class => 'btn btn-warning btn-mini' %>
             <% if edit? %>
               <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                         match_path(match),
