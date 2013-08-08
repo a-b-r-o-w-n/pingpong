@@ -10,10 +10,11 @@ class Match < ActiveRecord::Base
    'Canceled'     =>  'X'
   }
 
-  attr_accessible :status, :player1, :score1, :player2, :score2, :player1_id, :player2_id
+  attr_accessible :status, :score1, :score2, :player1_id, :player2_id, :tournament_id
 
   belongs_to :player1, class_name: "User", foreign_key: :player1_id
   belongs_to :player2, class_name: "User", foreign_key: :player2_id
+  belongs_to :tournament
 
   # validates :player1, presence: true
   # validates :player2, presence: true

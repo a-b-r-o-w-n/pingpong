@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
 
   has_many :matches1, class_name: "Match", foreign_key: :player1_id
   has_many :matches2, class_name: "Match", foreign_key: :player2_id
+  has_many :tournament_users
 
   
   

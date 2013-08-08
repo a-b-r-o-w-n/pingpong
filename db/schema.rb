@@ -11,14 +11,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130801184348) do
+ActiveRecord::Schema.define(version: 20130808230143) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "matches", force: true do |t|
     t.string   "status"
     t.integer  "player1_id"
-    t.integer  "score1",     default: 0
+    t.integer  "score1",        default: 0
     t.integer  "player2_id"
-    t.integer  "score2",     default: 0
+    t.integer  "score2",        default: 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "tournament_id"
+  end
+
+  create_table "tournament_users", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "tournament_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "tournaments", force: true do |t|
+    t.string   "tournament_type"
+    t.integer  "num_players"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -49,7 +67,7 @@ ActiveRecord::Schema.define(version: 20130801184348) do
     t.float    "rpi",                    default: 0.0
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end

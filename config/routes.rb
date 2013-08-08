@@ -2,6 +2,8 @@ Pingpong::Application.routes.draw do
 
   
 
+  
+
 	root to: "users#index"
 
   resources :matches do
@@ -30,4 +32,5 @@ Pingpong::Application.routes.draw do
 
   get "/leaderboard" => "users#index", as: :leaderboard
   
+  resources :tournaments
 end

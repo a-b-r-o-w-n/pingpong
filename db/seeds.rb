@@ -44,59 +44,82 @@ kellen = User.create({
     password_confirmation: DEFAULT_INSECURE_PASSWORD
     })
 
+Tournament.create({
+    tournament_type: 'SE',
+    num_players: 3
+    })
+
+Tournament.create({
+    tournament_type: 'WS',
+    num_players: 3
+    })
+
 
 Match.create({
-    status:         'C',
-    player1:        andy, 
+    status:         'P',
+    player1_id:     andy.id, 
     score1:         11,
-    player2:        michael,
-    score2:         8
+    player2_id:     michael.id,
+    score2:         8,
+    tournament_id:  1
+	})
+
+Match.create({
+    status:         'IP',
+    player1_id:     daniel.id, 
+    score1:         11,
+    player2_id:     andy.id,
+    score2:         6,
+    tournament_id:  1
 	})
 
 Match.create({
     status:         'C',
-    player1:        daniel, 
+    player1_id:     kellen.id,
     score1:         11,
-    player2:        andy,
-    score2:         6
-	})
-
-Match.create({
-    status:         'C',
-    player1:        kellen,
-    score1:         11,
-    player2:        michael,
-    score2:         8
+    player2_id:     michael.id,
+    score2:         8,
+    tournament_id:  1
     })
 
 Match.create({
     status:         'C',
-    player1:        kellen,
+    player1_id:     kellen.id,
     score1:         11,
-    player2:        andy,
-    score2:         6
+    player2_id:     andy.id,
+    score2:         6,
+    tournament_id:  2
     })
 
 Match.create({
     status:         'C',
-    player1:        kellen,
+    player1_id:     kellen.id,
     score1:         11,
-    player2:        daniel,
-    score2:         6
+    player2_id:     daniel.id,
+    score2:         6,
+    tournament_id:  2
     })
 
 Match.create({
     status:         'C',
-    player1:        michael,
+    player1_id:     michael.id,
     score1:         11,
-    player2:        daniel,
-    score2:         6
+    player2_id:     daniel.id,
+    score2:         6,
+    tournament_id:  2
     })
 
 Match.create({
     status:         'C',
-    player1:        andy,
+    player1_id:     andy.id,
     score1:         11,
-    player2:        kellen,
-    score2:         6
+    player2_id:     kellen.id,
+    score2:         6,
+    tournament_id:  2
     })
+
+Match.all.each do |m|
+    TournamentUser.create(user_id: m.player1_id, tournament_id: m.tournament_id)
+    TournamentUser.create(user_id: m.player2_id, tournament_id: m.tournament_id)
+end
+

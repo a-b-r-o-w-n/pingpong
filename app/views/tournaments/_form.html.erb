@@ -1,0 +1,9 @@
+<%= simple_form_for @tournament, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :tournament_type %>
+  <%= f.input :num_players %>
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                tournaments_path, :class => 'btn' %>
+  </div>
+<% end %>

@@ -1,0 +1,18 @@
+class Tournament < ActiveRecord::Base
+	TYPE_CHOICES = {
+		'Round Robin' 				=> 'RR',
+		'Single Elimination' 	=> 'SE',
+		'Double Elimination' 	=> 'DE',
+		'Winner Stays' 				=> 'WS'
+	}
+
+
+	attr_accessible :tournament_type, :num_players
+
+	validates_inclusion_of :tournament_type, in: TYPE_CHOICES.values, allow_nil: true
+
+	has_many :matches
+	has_many :tournament_users
+	has_many :players, -> { distinct }, through: :tournament_users, source: :user
+
+end
