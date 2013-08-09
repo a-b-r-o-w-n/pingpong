@@ -5,7 +5,7 @@
 
 <dl class="dl-horizontal">
   <dt><strong><%= model_class.human_attribute_name(:status) %>:</strong></dt>
-  <dd><%= @match.status %></dd>
+  <dd><%= @match.long_status %></dd>
   <dt><strong><%= model_class.human_attribute_name(:player1_id) %>:</strong></dt>
   <dd><%= @match.player1 %></dd>
   <dt><strong><%= model_class.human_attribute_name(:score1) %>:</strong></dt>
@@ -20,7 +20,7 @@
   <%= link_to t('.back', :default => t("helpers.links.back")),
               matches_path, :class => 'btn'  %>
   <% if ['P', 'IP'].include? @match.status %>
-    <%= link_to t('.play', :defualt => t("helpers.links.play")), play_match_path(@match), :class => 'btn btn-info'
+    <%= link_to t('.play', :defualt => t("helpers.links.play")), play_match_path(@match), :class => 'btn btn-info' %>
   <% end %>
   <%= link_to t('.edit', :default => t("helpers.links.edit")),
               edit_match_path(@match), :class => 'btn btn-warning' %>
