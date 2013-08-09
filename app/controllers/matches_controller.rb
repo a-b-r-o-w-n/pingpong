@@ -1,12 +1,17 @@
 class MatchesController < ApplicationController
   before_action :set_match, only: [:show, :edit, :update, :destroy, :play]
-  before_filter :authenticate_user!, except: [:index, :show] 
+  before_action :set_tournament
+  before_filter :authenticate_user!, except: [:index, :show, :pending_matches] 
 
   # GET /matches
   # GET /matches.json
   def index
     params[:page] ||=1
-    @matches = Match.order('id desc').paginate(:page => params[:page], :per_page => 10)
+    unless @tournament
+      @matches = Match.order('id desc').paginate(:page => params[:page], :per_page => 10)
+    else
+      @matches = @tournament.matches.order('id desc').paginate(:page => params[:page], :per_page => 10)
+    end
   end
 
   def pending_matches
@@ -92,6 +97,14 @@ class MatchesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def match_params
       params.require(:match).permit(:status, :player1_id, :player2_id, :score1, :score2, :player1, :player2)
+    end
+
+    def set_tournament
+      if params['tournament_id']
+        @tournament = Tournament.find(params['tournament_id'])
+      else
+        @tournament = nil
+      end
     end
 
 end

@@ -16,8 +16,8 @@ class Match < ActiveRecord::Base
   belongs_to :player2, class_name: "User", foreign_key: :player2_id
   belongs_to :tournament
 
-  # validates :player1, presence: true
-  # validates :player2, presence: true
+  validates :player1, presence: true
+  validates :player2, presence: true
   validate :cannot_play_self
 
   validates_inclusion_of :status, in: STATUS_CHOICES.values, allow_nil: true

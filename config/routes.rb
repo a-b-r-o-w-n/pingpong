@@ -32,5 +32,15 @@ Pingpong::Application.routes.draw do
 
   get "/leaderboard" => "users#index", as: :leaderboard
   
-  resources :tournaments
+  resources :tournaments do
+    resources :matches do
+      member do
+        get :play
+      end
+
+      collection do
+        get "pending", to: "matches#pending_matches"
+      end
+    end
+  end
 end
