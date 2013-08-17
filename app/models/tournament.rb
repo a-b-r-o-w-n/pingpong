@@ -18,4 +18,12 @@ class Tournament < ActiveRecord::Base
 
 	accepts_nested_attributes_for :matches
 
+	def long_type
+		TYPE_CHOICES.invert[self.tournament_type]
+	end
+
+	def initalize
+		self.num_players = self.players.count
+	end
+
 end

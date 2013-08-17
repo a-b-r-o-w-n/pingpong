@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130808230143) do
+ActiveRecord::Schema.define(version: 20130817062024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,19 @@ ActiveRecord::Schema.define(version: 20130808230143) do
     t.datetime "updated_at"
     t.integer  "tournament_id"
   end
+
+  create_table "rails_admin_histories", force: true do |t|
+    t.text     "message"
+    t.string   "username"
+    t.integer  "item"
+    t.string   "table"
+    t.integer  "month",      limit: 2
+    t.integer  "year",       limit: 8
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "rails_admin_histories", ["item", "table", "month", "year"], name: "index_rails_admin_histories", using: :btree
 
   create_table "tournament_users", force: true do |t|
     t.integer  "user_id"

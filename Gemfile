@@ -43,6 +43,7 @@ group :development, :test do
 	gem 'factory_girl_rails', '~> 4.0'
 	gem 'awesome_print'
 	gem 'sqlite3'
+	gem 'debugger'
 end
 
 # Use ActiveModel has_secure_password
@@ -54,9 +55,6 @@ end
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development
 
-# Use debugger
-# gem 'debugger', group: [:development, :test]
-
 gem 'devise', '3.0.0.rc'
 gem 'simple_form'
 gem 'protected_attributes'
@@ -66,3 +64,4 @@ gem 'less-rails'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 gem 'js-routes'
+gem 'rails_admin'

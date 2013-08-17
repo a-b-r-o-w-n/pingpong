@@ -1,6 +1,6 @@
 class MatchesController < ApplicationController
-  before_action :set_match, only: [:show, :edit, :update, :destroy, :play]
   before_action :set_tournament
+  before_action :set_match, only: [:show, :edit, :update, :destroy, :play]
   before_filter :authenticate_user!, except: [:index, :show, :pending_matches] 
 
   # GET /matches
@@ -16,8 +16,11 @@ class MatchesController < ApplicationController
 
   def pending_matches
     params[:page] ||=1
-    @matches = Match.where(status: ['P', 'IP']).order('id desc').paginate(:page => params[:page], :per_page => 10)
-
+    unless @tournament
+      @matches = Match.where(status: ['P', 'IP']).order('id desc').paginate(:page => params[:page], :per_page => 10)
+    else
+      @matches = @tournament.matches.where(status: ['P', 'IP']).order('id desc').paginate(:page => params[:page], :per_page => 10)
+    end
     respond_to do |format|
       format.html { render :template => "matches/index.html.erb" }
     end
@@ -30,7 +33,12 @@ class MatchesController < ApplicationController
 
   # GET /matches/new
   def new
-    @match = Match.new
+    unless @to
+      @match = Match.new
+    else
+      @match = @tournament.matches.new
+    end
+
   end
 
   # GET /matches/1/edit
@@ -91,7 +99,11 @@ class MatchesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_match
-      @match = Match.find(params[:id])
+      unless @tournament
+        @match = Match.find(params[:id])
+      else
+        @match = @tournament.matches.find(params[:id])
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
