@@ -1,0 +1,20 @@
+.col-sm-4
+  = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), |
+    :html => { method: :put, class: "well form-horizontal" }) do |f|                          |
+    = f.error_notification
+    .inputs
+      %fieldset
+        %legend Edit Profile
+        = f.input :email, :required => true, :autofocus => true, :wrapper_html => {class: "form-group"}
+        = f.input :first_name, :required => true, :wrapper_html => {class: "form-group"}
+        = f.input :last_name, :required => true
+        = f.input :profile_name, :required => true
+        = f.input :current_password, :required => true
+        = f.input :password, :required => false, :label => "New Password"
+        = f.input :password_confirmation, :required => false
+    .actions{:style => "margin-top: 5px;"}
+      = f.button :submit, "Update", class: "btn"
+  %h3 Cancel my account
+  %p
+    = "Unhappy? #{link_to "Cancel my account", registration_path(resource_name), :confirm => "Are you sure?", :method => :delete}."
+  = link_to "Back", :back

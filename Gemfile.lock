@@ -204,6 +204,7 @@ DEPENDENCIES
   debugger
   devise
   factory_girl_rails (~> 4.0)
+  haml
   jbuilder (~> 1.2)
   jquery-rails
   js-routes
