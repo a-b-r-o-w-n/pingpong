@@ -7,9 +7,6 @@ class Tournament < ActiveRecord::Base
 	}
 
 
-	attr_accessible :tournament_type, :num_players, :match_attributes
-	
-
 	validates_inclusion_of :tournament_type, in: TYPE_CHOICES.values, allow_nil: true
 
 	has_many :matches

@@ -1,0 +1,22 @@
+%table.table.table-striped
+  %thead
+    %tr
+      %th Player
+      %th Wins
+      %th Losses
+      %th Record
+      %th Winning Percentage
+      %th Rank
+  %tbody
+    - @users.each_with_index do |user, idx|
+      %tr
+        %td
+          - if idx == 0
+            = image_tag('first-place.png', style: 'height: 19px;')
+          = user.full_name
+        %td= user.wins
+        %td= user.losses
+        %td= user.record
+        %td= number_to_percentage(user.winning_percentage)
+        %td= user.rank
+= will_paginate @users

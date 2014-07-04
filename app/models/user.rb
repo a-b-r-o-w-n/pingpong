@@ -7,17 +7,12 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me,
-                  :first_name, :last_name, :profile_name, :wins, :losses,
-                  :player1_id, :player2_id, :rank_score, :rank, :opponents
-
   has_many :matches1, class_name: "Match", foreign_key: :player1_id
   has_many :matches2, class_name: "Match", foreign_key: :player2_id
   has_many :tournament_users
 
-  
-  
+
+
   validate :first_name,     presence: true,
                               length: { minimum: 1, maximum: 30 }
 

@@ -1,0 +1,46 @@
+- model_class = Match
+.page-header
+  %h1= t '.title', :default => model_class.model_name.human.pluralize.titleize
+%table.table.table-striped
+  %thead
+    %tr
+      %th= model_class.human_attribute_name(:status)
+      %th= model_class.human_attribute_name(:player1_id)
+      %th= model_class.human_attribute_name(:score1)
+      %th= model_class.human_attribute_name(:player2_id)
+      %th= model_class.human_attribute_name(:score2)
+      %th Winner
+      %th= model_class.human_attribute_name(:created_at)
+      %th= t '.actions', :default => t("helpers.actions")
+  %tbody
+    - @matches.each do |match|
+      %tr
+        %td= Match::STATUS_CHOICES.invert[match.status]
+        %td
+          %span.rank
+            = match.player1.rank
+          = match.player1
+        %td= match.score1
+        %td
+          %span.rank
+            = match.player2.rank
+          = match.player2
+        %td= match.score2
+        %td
+          = match.winner
+        %td= pretty_time(match.created_at)
+        %td
+          - if ['P', 'IP'].include? match.status
+            = link_to t('.play', :defualt => t("helpers.links.play")), play_match_path(match), :class => 'btn btn-info btn-mini'
+          - if match.status == 'P' || edit?
+            = link_to t('.edit', :default => t("helpers.links.edit")), edit_match_path(match), :class => 'btn btn-warning btn-mini'
+            - if edit?
+              = link_to t('.destroy', :default => t("helpers.links.destroy")),                                               |
+                match_path(match),                                                                                           |
+                :method => :delete,                                                                                          |
+                :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, |
+                :class => 'btn btn-mini btn-danger'                                                                          |
+= will_paginate @matches
+= link_to t('.new', :default => t("helpers.links.new")), |
+  new_match_path,                                        |
+  :class => 'btn btn-primary'                            |
