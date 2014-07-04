@@ -1,15 +1,20 @@
-.col-sm-4
-  = simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {class: "well form-inline"}) do |f|
-    = f.error_notification
-    %fieldset
-      %legend Sign up
-      .inputs
-        = f.input :email, :required => true, :autofocus => true, :label => false, :placeholder => "Email"
-        = f.input :first_name, :required => true, :label => false, :placeholder => "First Name"
-        = f.input :last_name, :required => true, :label => false, :placeholder => "Last Name"
-        = f.input :profile_name, :required => true, :label => false, :placeholder => "Profile Name"
-        = f.input :password, :required => true, :label => false, :placeholder => "Password"
-        = f.input :password_confirmation, :required => true, :label => false, :placeholder => "Confirm Password"
-    .actions
-      = f.button :submit, "Sign up", class: "btn"
-  = render :partial => "devise/shared/links"
+.col-sm-5
+  = simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+
+    .panel.panel-primary
+      .panel-heading
+        %h3.panel-title Edit Profile
+      .panel-body
+        = render 'shared/forms/errors', f: f
+
+        = f.input :first_name, autofocus: true
+        = f.input :last_name
+        = f.input :profile_name
+        = f.input :email
+        = f.input :password
+
+        .form-group.text-center
+          = f.button :submit, 'Sign Up', class: 'btn btn-primary'
+          = link_to 'Cancel', :back, class: 'btn btn-default'
+
+  = render partial: 'devise/shared/links'
