@@ -1,12 +1,10 @@
 class MatchesController < ApplicationController
+  before_filter :authenticate_user!, except: [:index, :show, :pending_matches]
   before_action :set_tournament
   before_action :set_match, only: [:show, :edit, :update, :destroy, :play]
-  before_filter :authenticate_user!, except: [:index, :show, :pending_matches] 
 
-  # GET /matches
-  # GET /matches.json
   def index
-    params[:page] ||=1
+    params[:page] ||= 1
     unless @tournament
       @matches = Match.order('id desc').paginate(:page => params[:page], :per_page => 10)
     else
@@ -15,7 +13,7 @@ class MatchesController < ApplicationController
   end
 
   def pending_matches
-    params[:page] ||=1
+    params[:page] ||= 1
     unless @tournament
       @matches = Match.where(status: ['P', 'IP']).order('id desc').paginate(:page => params[:page], :per_page => 10)
     else
@@ -26,14 +24,11 @@ class MatchesController < ApplicationController
     end
   end
 
-  # GET /matches/1
-  # GET /matches/1.json
   def show
   end
 
-  # GET /matches/new
   def new
-    unless @to
+    unless @tournament
       @match = Match.new
     else
       @match = @tournament.matches.new
@@ -41,12 +36,9 @@ class MatchesController < ApplicationController
 
   end
 
-  # GET /matches/1/edit
   def edit
   end
 
-  # POST /matches
-  # POST /matches.json
   def create
     @match = Match.new(match_params)
 
@@ -61,8 +53,6 @@ class MatchesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /matches/1
-  # PATCH/PUT /matches/1.json
   def update
 
     respond_to do |format|
@@ -76,8 +66,6 @@ class MatchesController < ApplicationController
     end
   end
 
-  # DELETE /matches/1
-  # DELETE /matches/1.json
   def destroy
     @match.destroy
     respond_to do |format|
@@ -86,10 +74,10 @@ class MatchesController < ApplicationController
     end
   end
 
-  def play 
+  def play
     if ['IP', 'P'].include? @match.status
       @match.update_attribute :status, 'IP'
-      @match
+      redirect_to @match
     else
       redirect_to matches_url
     end
@@ -97,26 +85,16 @@ class MatchesController < ApplicationController
 
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_match
-      unless @tournament
-        @match = Match.find(params[:id])
-      else
-        @match = @tournament.matches.find(params[:id])
-      end
+      @match = Match.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
     def match_params
-      params.require(:match).permit(:status, :player1_id, :player2_id, :score1, :score2, :player1, :player2)
+      params.require(:match).permit(:status, :player1_id, :player2_id, :score1, :score2)
     end
 
     def set_tournament
-      if params['tournament_id']
-        @tournament = Tournament.find(params['tournament_id'])
-      else
-        @tournament = nil
-      end
+      @tournament = Tournament.find(params[:tournament_id]) if params[:tournament_id]
     end
 
 end
