@@ -32,12 +32,9 @@ gem 'jbuilder', '~> 1.2'
 
 group :development, :test do
 	gem 'rspec-rails'
-	gem 'pry'
-	gem 'pry-nav'
 	gem 'shoulda-matchers'
 	gem 'factory_girl_rails', '~> 4.0'
 	gem 'awesome_print'
-	gem 'sqlite3'
 	gem 'debugger'
 end
 
