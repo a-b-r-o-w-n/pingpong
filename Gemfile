@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.0'
+gem 'rails', '4.1.4'
 
 # Use sqlite3 as the database for Active Record
 group :production do
@@ -30,11 +30,6 @@ gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
-group :doc do
-  # bundle exec rake doc:rails generates the API under doc/api.
-  gem 'sdoc', require: false
-end
-
 group :development, :test do
 	gem 'rspec-rails'
 	gem 'pry'
@@ -55,12 +50,9 @@ end
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development
 
-gem 'devise', '3.0.0.rc'
+gem 'devise'
 gem 'simple_form'
-gem 'protected_attributes'
-gem 'twitter-bootstrap-rails'
-gem 'therubyracer'
-gem 'less-rails' 
+gem 'bootstrap-sass', '~> 3.2.0'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 gem 'js-routes'
