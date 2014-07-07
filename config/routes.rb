@@ -1,10 +1,8 @@
+require 'sidekiq/web'
 Pingpong::Application.routes.draw do
 
-  
-
-  
-
   mount RailsAdmin::Engine => '/admin', :as => 'rails_admin'
+  mount Sidekiq::Web => '/sidekiq', constraints: AuthConstraint.new
 	root to: "users#index"
 
   resources :matches do
@@ -32,7 +30,7 @@ Pingpong::Application.routes.draw do
   end
 
   get "/leaderboard" => "users#index", as: :leaderboard
-  
+
   resources :tournaments do
     resources :matches do
       member do
