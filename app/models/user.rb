@@ -105,9 +105,9 @@ class User < ActiveRecord::Base
     logger.tagged("STATS", "RPI") { logger.info "#{self.full_name} oowp updated from [#{old_stat}] to [#{self.rpi}]." if (old_stat - self.rpi) > 0.2 }
   end
 
-  def update_rank(users)
+  def update_rank
     old_stat = self.rank
-    self.update_attribute :rank, users.count(conditions: "rpi > #{self.rpi}") + 1
+    self.update_attribute :rank, User.where('rpi > ?', rpi).count + 1
     logger.tagged("STATS", "RANK") { logger.info "#{self.full_name} oowp updated from [#{old_stat}] to [#{self.rank}]." if old_stat != self.rank }
   end
 
