@@ -22,3 +22,7 @@ body {
 .btn-black {
   @include button-variant(white, black, black);
 }
+
+.alert-notice {
+  @extend .alert-info;
+}

@@ -51,7 +51,7 @@ class MatchesController < ApplicationController
 
     respond_to do |format|
       if @match.update(match_params)
-        format.html { redirect_to matches_url, notice: 'Match was successfully updated.' }
+        format.html { redirect_to matches_url, info: 'Match was successfully updated.' }
         format.js { head :no_content }
       else
         format.html { render action: 'edit' }
