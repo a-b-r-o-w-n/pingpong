@@ -58,6 +58,7 @@ end
 gem 'devise'
 gem 'simple_form'
 gem 'bootstrap-sass', '~> 3.2.0'
+gem 'font-awesome-sass'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 gem 'js-routes'

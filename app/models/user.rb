@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
     self.profile_name
   end
 
-  def User.update_stats
+  def self.update_stats
     @users = User.all
     @users.each { |u| u.update_wins           }
     @users.each { |u| u.update_losses         }

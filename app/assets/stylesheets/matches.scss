@@ -1,0 +1,39 @@
+.rank {
+  font-size: smaller;
+  font-weight: bold;
+}
+
+
+.btn-container {
+	margin-top: 50px;
+}
+
+.score {
+	cursor: pointer;
+	font-size: 45px;
+	margin-bottom: 45px;
+	color: white;
+	text-outline: black;
+	line-height: 190px;
+	height: 200px;
+	width: 200px;
+	display: inline-block;
+	border-radius: 100px;
+	border: 5px solid $gray-lighter;
+	&#p1-score {
+		background: $brand-primary;
+	}
+	&#p2-score {
+		background: $brand-danger;
+	}
+	.name {
+		line-height: 14px;
+		font-size: 14px;
+		margin-top: -70px;
+	}
+}
+.separator {
+	margin: 0 50px;
+	font-size: 100px;
+	display: inline-block;
+}

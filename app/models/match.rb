@@ -1,6 +1,6 @@
 class Match < ActiveRecord::Base
 	# score1 is player1's score and score2 is player2's score
-  after_save :update_users_stats
+  # after_save :update_users_stats
 
 
   STATUS_CHOICES = {

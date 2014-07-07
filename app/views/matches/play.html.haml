@@ -1,22 +1,18 @@
-.row{:style => "padding-top: 25px;"}
-  .col-sm-10.btn-container
-    .score
-      %span#p1-display-score= @match.score1
-      \-
-      %span#p2-display-score= @match.score2
-    .point-button
-      %span#player1-point= @match.player1
-      %span#vs VS
-      %span#player2-point= @match.player2
-    = button_tag "End Game", class: "btn btn-large btn-inverse", id: "end-game", style: "margin: 45px auto 0; display: block;"
-#form-container{:style => "display: none;"}
+.row{style: 'padding-top: 25px;'}
+  .col-sm-10.text-center
+    .score#p1-score.text-center
+      %span.points= @match.score1
+      .name= @match.player1.first_name
+    .hidden-xs.separator -
+    .score#p2-score.text-center
+      %span.points= @match.score2
+      .name= @match.player2.first_name
+    = button_tag 'End Game', class: 'btn btn-large btn-black', id: 'end-game', style: 'margin: 45px auto 0; display: block;'
+
+#form-container.hidden
   = simple_form_for @match, remote: true do |f|
     = f.input :status, collection: Match::STATUS_CHOICES
     = f.association :player1
     = f.input :score1
     = f.association :player2
     = f.input :score2
-    .form-actions
-      = f.button :submit, :class => 'btn btn-primary'
-      = link_to t('.cancel', :default => t("helpers.links.cancel")), |
-        matches_path, :class => 'btn'                                |

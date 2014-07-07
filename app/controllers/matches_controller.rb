@@ -24,9 +24,6 @@ class MatchesController < ApplicationController
     end
   end
 
-  def show
-  end
-
   def new
     unless @tournament
       @match = Match.new
@@ -57,11 +54,11 @@ class MatchesController < ApplicationController
 
     respond_to do |format|
       if @match.update(match_params)
-        format.html { redirect_to @match, notice: 'Match was successfully updated.' }
-        format.json { head :no_content }
+        format.html { redirect_to matches_url, notice: 'Match was successfully updated.' }
+        format.js { head :no_content }
       else
         format.html { render action: 'edit' }
-        format.json { render json: @match.errors, status: :unprocessable_entity }
+        format.js { render json: @match.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -77,7 +74,7 @@ class MatchesController < ApplicationController
   def play
     if ['IP', 'P'].include? @match.status
       @match.update_attribute :status, 'IP'
-      redirect_to @match
+      @match
     else
       redirect_to matches_url
     end
