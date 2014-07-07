@@ -70,14 +70,10 @@ class User < ActiveRecord::Base
     self.profile_name
   end
 
-  def self.update_stats
-    @users = User.all
-    @users.each { |u| u.update_wins           }
-    @users.each { |u| u.update_losses         }
-    @users.each { |u| u.update_owp            }
-    @users.each { |u| u.update_oowp           }
-    @users.each { |u| u.update_rpi            }
-    @users.each { |u| u.update_rank(@users)   }
+  def update_stats
+    update_wins
+    update_losses
+    UserStatsWorker.perform_async
   end
 
   def update_wins
@@ -117,6 +113,7 @@ class User < ActiveRecord::Base
   end
 
   private
+
   def average_array(ary)
     ary.inject(:+).to_f / ary.size
   end

@@ -55,6 +55,11 @@
 
 
         .col-md-9
+          - flash.each do |klass, msg|
+            .alert.alert-dismissible{ class: "alert-#{klass}"}
+              %button.close{ data: {dismiss: 'alert'} } &times;
+              = msg
+
           = yield
 
       %footer

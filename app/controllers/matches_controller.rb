@@ -39,14 +39,11 @@ class MatchesController < ApplicationController
   def create
     @match = Match.new(match_params)
 
-    respond_to do |format|
-      if @match.save
-        format.html { redirect_to matches_url, notice: 'Match was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @match }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @match.errors, status: :unprocessable_entity }
-      end
+    if @match.save
+      redirect_to matches_url
+    else
+      flash.now[:danger] = object_errors_flash( @match )
+      render :new
     end
   end
 
