@@ -20,7 +20,7 @@ class MatchesController < ApplicationController
       @matches = @tournament.matches.where(status: ['P', 'IP']).order('id desc').paginate(:page => params[:page], :per_page => 10)
     end
     respond_to do |format|
-      format.html { render :template => "matches/index.html.erb" }
+      format.html { render template: 'matches/index.html.haml' }
     end
   end
 
