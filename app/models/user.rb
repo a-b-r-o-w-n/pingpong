@@ -73,7 +73,6 @@ class User < ActiveRecord::Base
   def update_stats
     update_wins
     update_losses
-    UserStatsWorker.perform_async
   end
 
   def update_wins

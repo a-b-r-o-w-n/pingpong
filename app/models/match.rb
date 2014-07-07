@@ -46,8 +46,11 @@ class Match < ActiveRecord::Base
   end
 
   def update_users_stats
-    player1.update_stats
-    player2.update_stats
+    if status == 'C'
+      player1.update_stats
+      player2.update_stats
+      UserStatsWorker.new.perform
+    end
   end
 
 end
