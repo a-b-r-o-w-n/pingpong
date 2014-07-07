@@ -1,6 +1,6 @@
 class Match < ActiveRecord::Base
 	# score1 is player1's score and score2 is player2's score
-  # after_save :update_users_stats
+  after_save :update_users_stats
 
 
   STATUS_CHOICES = {
@@ -42,7 +42,7 @@ class Match < ActiveRecord::Base
 
   private
   def cannot_play_self
-    errors[:base] << 'You cannot add yourself as a friend.' if self.player1_id == self.player2_id
+    errors[:base] << 'You cannot play against yourself. <strong>Get a life.</strong>' if self.player1_id == self.player2_id
   end
 
   def update_users_stats
