@@ -1,17 +1,18 @@
-- model_class = Match
 .page-header
-  %h1= t '.title', :default => model_class.model_name.human.pluralize.titleize
+  %h1
+    Matches
+    .pull-right
+      = link_to 'New Match', new_match_path, class: 'btn btn-primary'
 %table.table.table-striped
   %thead
     %tr
-      %th= model_class.human_attribute_name(:status)
-      %th= model_class.human_attribute_name(:player1_id)
-      %th= model_class.human_attribute_name(:score1)
-      %th= model_class.human_attribute_name(:player2_id)
-      %th= model_class.human_attribute_name(:score2)
+      %th Status
+      %th Player 1
+      %th Player 1 Score
+      %th Player 2
+      %th Player 2 Score
       %th Winner
-      %th= model_class.human_attribute_name(:created_at)
-      %th= t '.actions', :default => t("helpers.actions")
+      %th Actions
   %tbody
     - @matches.each do |match|
       %tr
@@ -28,19 +29,11 @@
         %td= match.score2
         %td
           = match.winner
-        %td= pretty_time(match.created_at)
         %td
           - if ['P', 'IP'].include? match.status
-            = link_to t('.play', :defualt => t("helpers.links.play")), play_match_path(match), :class => 'btn btn-info btn-mini'
+            = link_to 'Play', play_match_path(match), class: 'btn btn-info btn-xs'
           - if match.status == 'P' || edit?
-            = link_to t('.edit', :default => t("helpers.links.edit")), edit_match_path(match), :class => 'btn btn-warning btn-mini'
+            = link_to 'Edit', edit_match_path(match), class: 'btn btn-warning btn-xs'
             - if edit?
-              = link_to t('.destroy', :default => t("helpers.links.destroy")),                                               |
-                match_path(match),                                                                                           |
-                :method => :delete,                                                                                          |
-                :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, |
-                :class => 'btn btn-mini btn-danger'                                                                          |
+              = link_to 'Delete', match_path(match), method: :delete, confirm: 'Are you sure?', class: 'btn btn-xs btn-danger'
 = will_paginate @matches
-= link_to t('.new', :default => t("helpers.links.new")), |
-  new_match_path,                                        |
-  :class => 'btn btn-primary'                            |
