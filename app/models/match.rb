@@ -46,7 +46,8 @@ class Match < ActiveRecord::Base
   end
 
   def update_users_stats
-    User.update_stats
+    player1.update_stats
+    player2.update_stats
   end
 
 end

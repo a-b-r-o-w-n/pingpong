@@ -6,9 +6,9 @@ class MatchesController < ApplicationController
   def index
     params[:page] ||= 1
     unless @tournament
-      @matches = Match.order('id desc').paginate(:page => params[:page], :per_page => 10)
+      @matches = Match.includes(:player1, :player2).order('id desc').paginate(:page => params[:page], :per_page => 10)
     else
-      @matches = @tournament.matches.order('id desc').paginate(:page => params[:page], :per_page => 10)
+      @matches = @tournament.matches.includes(:player1, :player2).order('id desc').paginate(:page => params[:page], :per_page => 10)
     end
   end
 
@@ -54,7 +54,10 @@ class MatchesController < ApplicationController
         format.html { redirect_to matches_url, info: 'Match was successfully updated.' }
         format.js { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html do
+          flash.now[:danger] = object_errors_flash( @match )
+          render :edit
+        end
         format.js { render json: @match.errors, status: :unprocessable_entity }
       end
     end
