@@ -101,7 +101,7 @@ class User < ActiveRecord::Base
 
   def update_rpi
     old_stat = self.rpi
-    self.update_attribute :rpi, (self.winning_percentage * 0.40) + (self.owp * 0.35) + (self.oowp * 0.25)
+    self.update_attribute :rpi, (self.winning_percentage * 0.60) + (self.owp * 0.25) + (self.oowp * 0.15)
     logger.tagged("STATS", "RPI") { logger.info "#{self.full_name} oowp updated from [#{old_stat}] to [#{self.rpi}]." if (old_stat - self.rpi) > 0.2 }
   end
 
@@ -118,7 +118,8 @@ class User < ActiveRecord::Base
   end
 
   def set_new_stats
-    User.update_stats
+    update_stats
+    UserStatsWorker.new.perform
   end
 
 end
