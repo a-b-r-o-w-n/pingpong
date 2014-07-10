@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :omniauth_providers => [:google_ouath2]
+         :omniauthable, :omniauth_providers => [:google_oauth2]
 
   has_many :matches1, class_name: "Match", foreign_key: :player1_id
   has_many :matches2, class_name: "Match", foreign_key: :player2_id
@@ -114,9 +114,11 @@ class User < ActiveRecord::Base
 
   def self.from_omniauth(auth)
     where(auth.slice(:provider, :uid)).first_or_create do |user|
+      user.first_name = auth.info.first_name
+      user.last_name = auth.info.last_name
+      user.profile_name = auth.info.name.gsub(/\s/, '').downcase
       user.email = auth.info.email
       user.password = Devise.friendly_token[0,20]
-      binding.pry
     end
   end
 
