@@ -134,6 +134,10 @@ class User < ActiveRecord::Base
     super && provider.blank?
   end
 
+  def image
+    super || 'default-avatar.png'
+  end
+
   private
 
   def average_array(ary)
