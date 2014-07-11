@@ -7,15 +7,21 @@
       .panel-body
         = render 'shared/forms/errors', f: f
 
-        .col-sm-6
-          = f.input :first_name, autofocus: true
-          = f.input :last_name
-          = f.input :profile_name
-        .col-sm-6
-          = f.input :email
-          - if resource.encrypted_password.present?
+        - if resource.encrypted_password.present?
+          .col-sm-6
+            = f.input :first_name, autofocus: true
+            = f.input :last_name
+            = f.input :profile_name
+
+          .col-sm-6
+            = f.input :email
             = f.input :password, label: 'New Password'
             = f.input :password_confirmation
+        - else
+          .col-sm-12
+            = f.input :first_name, autofocus: true
+            = f.input :last_name
+            = f.input :profile_name
 
         .col-sm-6.col-sm-offset-3
           - if resource.encrypted_password.present?

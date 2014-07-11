@@ -113,13 +113,14 @@ class User < ActiveRecord::Base
   end
 
   def self.from_omniauth(auth)
-    where(auth.slice(:provider, :uid)).first_or_create do |user|
+    u = where(auth.slice(:provider, :uid)).first_or_create do |user|
       user.first_name = auth.info.first_name
       user.last_name = auth.info.last_name
       user.profile_name = auth.info.name.gsub(/\s/, '').downcase
-      user.image = auth.info.image
       user.email = auth.info.email
     end
+    u.update_image( auth.info.image )
+    u
   end
 
   def update_with_password(params, *options)
@@ -136,6 +137,10 @@ class User < ActiveRecord::Base
 
   def image
     super || 'default-avatar.png'
+  end
+
+  def update_image( image )
+    update(image: image)
   end
 
   private
