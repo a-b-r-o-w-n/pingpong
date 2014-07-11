@@ -13,11 +13,13 @@
           = f.input :profile_name
         .col-sm-6
           = f.input :email
-          = f.input :password, label: 'New Password'
-          = f.input :password_confirmation
+          - if resource.encrypted_password.present?
+            = f.input :password, label: 'New Password'
+            = f.input :password_confirmation
 
         .col-sm-6.col-sm-offset-3
-          = f.input :current_password
+          - if resource.encrypted_password.present?
+            = f.input :current_password
 
           .form-group.text-center
             = f.button :submit, 'Update', class: 'btn btn-primary'

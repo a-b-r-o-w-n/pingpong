@@ -117,9 +117,21 @@ class User < ActiveRecord::Base
       user.first_name = auth.info.first_name
       user.last_name = auth.info.last_name
       user.profile_name = auth.info.name.gsub(/\s/, '').downcase
+      user.image = auth.info.image
       user.email = auth.info.email
-      user.password = Devise.friendly_token[0,20]
     end
+  end
+
+  def update_with_password(params, *options)
+    if encrypted_password.blank?
+      update_attributes(params, *options)
+    else
+      super
+    end
+  end
+
+  def password_required?
+    super && provider.blank?
   end
 
   private
